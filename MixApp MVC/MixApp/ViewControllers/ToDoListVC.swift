@@ -31,7 +31,6 @@ class ToDoListVC: UITableViewController {
         sideMenu()
     }
     
-    
     // MARK: - SideMenuFunc
     
     func sideMenu() {
@@ -64,6 +63,7 @@ class ToDoListVC: UITableViewController {
     
     
     @IBAction func editAct(_ sender: Any) {
+        
         tableView.setEditing(!tableView.isEditing, animated: true)
         DispatchQueue.main.asyncAfter(deadline: .now() + 0.3) {
             self.tableView.reloadData()
@@ -127,20 +127,22 @@ class ToDoListVC: UITableViewController {
     override func tableView(_ tableView: UITableView, commit editingStyle: UITableViewCell.EditingStyle, forRowAt indexPath: IndexPath) {
         
         if editingStyle == .delete {
+            // Delete the row from the data source
+            
             removeItem(at: indexPath.row)
             tableView.deleteRows(at: [indexPath], with: .fade)
         } else if editingStyle == .insert {}
     }
     
     override func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
-       
+        
         tableView.deselectRow(at: indexPath, animated: true)
         
         let index : Int
         
         if isFiltering() {
-            let currentItems = filteredToDo[indexPath.row]
-            let currentIndex = toDoItems.firstIndex(where: {$0 === currentItems})
+            let currentItem = filteredToDo[indexPath.row]
+            let currentIndex = toDoItems.firstIndex(where: {$0 === currentItem})
             index = currentIndex!
         } else {
             index = indexPath.row
@@ -159,7 +161,6 @@ class ToDoListVC: UITableViewController {
         
         moveItem(fromIndex: fromIndexPath.row, toIndex: to.row)
         tableView.reloadData()
-        
     }
     
     override func tableView(_ tableView: UITableView, editingStyleForRowAt indexPath: IndexPath) -> UITableViewCell.EditingStyle {
